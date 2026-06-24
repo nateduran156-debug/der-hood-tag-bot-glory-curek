@@ -65,6 +65,39 @@ export async function unban(groupId, userId) {
   return r.ok;
 }
 
+export async function getJoinRequests(groupId) {
+  const c = cookie();
+  if (!c) throw new Error('No Roblox cookie set. Use `/setcookie` to set one.');
+  const all = [];
+  let cursor = '';
+  do {
+    const url = `${GROUPS}/groups/${groupId}/join-requests?limit=100&sortOrder=Asc${cursor ? `&cursor=${cursor}` : ''}`;
+    const r = await fetch(url, { headers: { Cookie: c } });
+    const d = await r.json();
+    if (!r.ok) {
+      const msg = d.errors?.[0]?.message ?? `Roblox error ${r.status}`;
+      throw new Error(msg);
+    }
+    all.push(...(d.data ?? []));
+    cursor = d.nextPageCursor ?? '';
+  } while (cursor);
+  return all;
+}
+
+export async function acceptJoinRequest(groupId, userId) {
+  const c = cookie();
+  if (!c) throw new Error('No Roblox cookie set. Use `/setcookie` to set one.');
+  const token = await xcsrf(c);
+  const r = await fetch(`${GROUPS}/groups/${groupId}/join-requests/users/${userId}`, {
+    method: 'POST',
+    headers: { Cookie: c, 'X-CSRF-TOKEN': token },
+  });
+  if (!r.ok) {
+    const e = await r.json().catch(() => ({}));
+    throw new Error(e.errors?.[0]?.message ?? `Roblox error ${r.status}`);
+  }
+}
+
 async function xcsrf(c) {
   const r = await fetch('https://auth.roblox.com/v2/logout', {
     method: 'POST',
