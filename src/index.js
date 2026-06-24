@@ -1,4 +1,4 @@
-import { Client, GatewayIntentBits, Events, Collection } from 'discord.js';
+import { Client, GatewayIntentBits, Events, Collection, REST, Routes } from 'discord.js';
 import { err } from './utils/ui.js';
 
 import { data as dLogin,          execute as eLogin }          from './commands/login.js';
@@ -20,8 +20,8 @@ import { data as dResetCd,        execute as eResetCd }        from './commands/
 import { data as dResetLogin,     execute as eResetLogin }     from './commands/reset-login.js';
 import { data as dHelp,           execute as eHelp }           from './commands/help.js';
 import { data as dSetCookie,      execute as eSetCookie }      from './commands/setcookie.js';
-import { data as dAccept,    execute as eAccept }    from './commands/accept.js';
-import { data as dAcceptAll, execute as eAcceptAll } from './commands/accept-all.js';
+import { data as dAccept,         execute as eAccept }         from './commands/accept.js';
+import { data as dAcceptAll,      execute as eAcceptAll }      from './commands/accept-all.js';
 import { tagCommands }   from './commands/tag-commands.js';
 import { gloryCommands } from './commands/glory-commands.js';
 
@@ -64,8 +64,23 @@ const all = [
 
 for (const cmd of all) commands.set(cmd.data.name, cmd);
 
-client.once(Events.ClientReady, c => {
+const commandJSON = all.map(c => ({
+  ...c.data.toJSON(),
+  integration_types: [0, 1],
+  contexts: [0, 1, 2],
+}));
+
+client.once(Events.ClientReady, async c => {
   console.log(`Online as ${c.user.tag} — ${commands.size} commands loaded`);
+
+  try {
+    const rest = new REST().setToken(process.env.DISCORD_BOT_TOKEN);
+    await rest.put(Routes.applicationCommands(c.user.id), { body: commandJSON });
+    console.log(`Commands registered globally (${commandJSON.length} total)`);
+  } catch (e) {
+    console.error('Failed to register commands:', e.message);
+    if (e.rawError) console.error(JSON.stringify(e.rawError, null, 2));
+  }
 });
 
 client.on(Events.InteractionCreate, async interaction => {
