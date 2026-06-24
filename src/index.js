@@ -20,6 +20,8 @@ import { data as dResetCd,        execute as eResetCd }        from './commands/
 import { data as dResetLogin,     execute as eResetLogin }     from './commands/reset-login.js';
 import { data as dHelp,           execute as eHelp }           from './commands/help.js';
 import { data as dSetCookie,      execute as eSetCookie }      from './commands/setcookie.js';
+import { data as dAccept,    execute as eAccept }    from './commands/accept.js';
+import { data as dAcceptAll, execute as eAcceptAll } from './commands/accept-all.js';
 import { tagCommands }   from './commands/tag-commands.js';
 import { gloryCommands } from './commands/glory-commands.js';
 
@@ -54,6 +56,8 @@ const all = [
   { data: dResetLogin,     execute: eResetLogin },
   { data: dHelp,           execute: eHelp },
   { data: dSetCookie,      execute: eSetCookie },
+  { data: dAccept,         execute: eAccept },
+  { data: dAcceptAll,      execute: eAcceptAll },
   ...tagCommands,
   ...gloryCommands,
 ];

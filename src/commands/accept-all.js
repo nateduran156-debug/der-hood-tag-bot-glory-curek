@@ -8,8 +8,7 @@ const GROUP = 396910998;
 
 export const data = new SlashCommandBuilder()
   .setName('acceptall')
-  .setDescription('accept all pending join requests in the group')
-  .setDMPermission(true);
+  .setDescription('accept all pending join requests in the group');
 
 export async function execute(i) {
   if (!isAdmin(i.user.id) && !isOwner(i.user.id)) return i.reply(err('No Permission', 'Admins only.'));

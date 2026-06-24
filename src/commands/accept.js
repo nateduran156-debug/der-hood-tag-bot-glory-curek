@@ -9,7 +9,6 @@ const GROUP = 396910998;
 export const data = new SlashCommandBuilder()
   .setName('accept')
   .setDescription('accept a join request in the group')
-  .setDMPermission(true)
   .addStringOption(o => o.setName('username').setDescription('roblox username').setRequired(true));
 
 export async function execute(i) {
