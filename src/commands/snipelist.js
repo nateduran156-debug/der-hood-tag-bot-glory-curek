@@ -2,17 +2,18 @@ import { SlashCommandBuilder } from 'discord.js';
 import { ok, err, info } from '../utils/ui.js';
 import { getUser } from '../roblox.js';
 import { isAdmin, addSnipe, removeSnipe } from '../db.js';
+import { isOwner } from '../utils/owners.js';
 
 export const data = new SlashCommandBuilder()
   .setName('snipelist')
-  .setDescription('alerts torn when inputted user is in a game')
+  .setDescription('alerts you when a roblox user joins a game')
   .setDMPermission(true)
   .addStringOption(o => o.setName('action').setDescription('add or remove').setRequired(true)
     .addChoices({ name: 'add', value: 'add' }, { name: 'remove', value: 'remove' }))
   .addStringOption(o => o.setName('user').setDescription('roblox username').setRequired(true));
 
 export async function execute(i) {
-  if (!isAdmin(i.user.id) && i.user.id !== process.env.OWNER_ID) return i.reply(err('No Permission', 'Admins only.'));
+  if (!isAdmin(i.user.id) && !isOwner(i.user.id)) return i.reply(err('No Permission', 'Admins only.'));
   await i.deferReply({ ephemeral: true });
 
   const action = i.options.getString('action');

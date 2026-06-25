@@ -7,6 +7,7 @@ import { isOwner } from '../utils/owners.js';
 const GROUPS = [
   { id: 396910998, name: 'Tags Group' },
   { id: 35914267, name: 'Glory Group' },
+  { id: 206868002, name: '1400 Gradient Group' },
 ];
 
 export const data = new SlashCommandBuilder()

@@ -1,6 +1,7 @@
 import { SlashCommandBuilder, MessageFlags } from 'discord.js';
 import { V2, C, box, t, hr, err } from '../utils/ui.js';
 import { getSnipelist, isAdmin } from '../db.js';
+import { isOwner } from '../utils/owners.js';
 
 export const data = new SlashCommandBuilder()
   .setName('snipelist-view')
@@ -8,7 +9,7 @@ export const data = new SlashCommandBuilder()
   .setDMPermission(true);
 
 export async function execute(i) {
-  if (!isAdmin(i.user.id) && i.user.id !== process.env.OWNER_ID) return i.reply(err('No Permission', 'You must be whitelisted to use this bot.'));
+  if (!isAdmin(i.user.id) && !isOwner(i.user.id)) return i.reply(err('No Permission', 'You must be whitelisted to use this bot.'));
   await i.deferReply({ ephemeral: true });
   const rows = getSnipelist(i.user.id);
 

@@ -13,7 +13,7 @@ const GROUP_MAP = {
 
 export const data = new SlashCommandBuilder()
   .setName('tag-wipe')
-  .setDescription('wipe a roblox user\'s role from a group')
+  .setDescription("wipe a roblox user's role from a group")
   .setDMPermission(true)
   .addStringOption(o => o
     .setName('username')
