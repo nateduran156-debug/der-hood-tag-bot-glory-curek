@@ -1,4 +1,4 @@
-import { REST, Routes } from 'discord.js';
+import { REST, Routes, IntegrationType, InteractionContextType } from 'discord.js';
 
 import { data as dLogin }          from './commands/login.js';
 import { data as dLinkStatus }     from './commands/link-status.js';
@@ -34,11 +34,11 @@ const raw = [
   ...gloryCommands.map(c => c.data),
 ];
 
-const commands = raw.map(c => ({
-  ...c.toJSON(),
-  integration_types: [0, 1],
-  contexts: [0, 1, 2],
-}));
+const commands = raw.map(c =>
+  c.setIntegrationTypes([IntegrationType.GuildInstall, IntegrationType.UserInstall])
+   .setContexts([InteractionContextType.Guild, InteractionContextType.BotDM, InteractionContextType.PrivateChannel])
+   .toJSON()
+);
 
 const rest = new REST().setToken(process.env.DISCORD_BOT_TOKEN);
 
