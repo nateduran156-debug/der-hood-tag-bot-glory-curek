@@ -1,4 +1,4 @@
-import { REST, Routes, IntegrationType, InteractionContextType } from 'discord.js';
+import { REST, Routes } from 'discord.js';
 
 import { data as dLogin }          from './commands/login.js';
 import { data as dLinkStatus }     from './commands/link-status.js';
@@ -20,25 +20,32 @@ import { data as dResetLogin }     from './commands/reset-login.js';
 import { data as dHelp }           from './commands/help.js';
 import { data as dSetCookie }      from './commands/setcookie.js';
 import { data as dTag1400 }        from './commands/tag-1400.js';
+import { data as dSnipelist }      from './commands/snipelist.js';
+import { data as dSnipelistView }  from './commands/snipelist-view.js';
 import { groupLinkCommands } from './commands/group-links.js';
-import { tagCommands }   from './commands/tag-commands.js';
-import { gloryCommands } from './commands/glory-commands.js';
+import { tagCommands }       from './commands/tag-commands.js';
+import { gloryCommands }     from './commands/glory-commands.js';
 
 const raw = [
   dLogin, dLinkStatus, dSetTag, dCooldown, dRolecheck, dRoles,
   dUnrole, dUnbanAll, dTagWipe, dWhitelistAdmin, dWhitelistRow,
   dBlacklist, dBlacklistList, dTagHistory, dView, dResetCd, dResetLogin,
-  dHelp, dSetCookie, dTag1400,
+  dHelp, dSetCookie, dTag1400, dSnipelist, dSnipelistView,
   ...groupLinkCommands.map(c => c.data),
   ...tagCommands.map(c => c.data),
   ...gloryCommands.map(c => c.data),
 ];
 
-const commands = raw.map(c =>
-  c.setIntegrationTypes([IntegrationType.GuildInstall, IntegrationType.UserInstall])
-   .setContexts([InteractionContextType.Guild, InteractionContextType.BotDM, InteractionContextType.PrivateChannel])
-   .toJSON()
-);
+const commands = raw.map(c => ({
+  ...c.toJSON(),
+  integration_types: [0, 1],
+  contexts: [0, 1, 2],
+}));
+
+if (!process.env.DISCORD_BOT_TOKEN || !process.env.DISCORD_CLIENT_ID) {
+  console.error('DISCORD_BOT_TOKEN and DISCORD_CLIENT_ID must be set');
+  process.exit(1);
+}
 
 const rest = new REST().setToken(process.env.DISCORD_BOT_TOKEN);
 

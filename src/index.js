@@ -1,5 +1,6 @@
 import { Client, GatewayIntentBits, Events, Collection } from 'discord.js';
 import { err } from './utils/ui.js';
+import { startSnipeLoop } from './snipe-loop.js';
 
 import { data as dLogin,          execute as eLogin }          from './commands/login.js';
 import { data as dLinkStatus,     execute as eLinkStatus }     from './commands/link-status.js';
@@ -21,9 +22,11 @@ import { data as dResetLogin,     execute as eResetLogin }     from './commands/
 import { data as dHelp,           execute as eHelp }           from './commands/help.js';
 import { data as dSetCookie,      execute as eSetCookie }      from './commands/setcookie.js';
 import { data as dTag1400,        execute as eTag1400 }        from './commands/tag-1400.js';
+import { data as dSnipelist,      execute as eSnipelist }      from './commands/snipelist.js';
+import { data as dSnipelistView,  execute as eSnipelistView }  from './commands/snipelist-view.js';
 import { groupLinkCommands } from './commands/group-links.js';
-import { tagCommands }   from './commands/tag-commands.js';
-import { gloryCommands } from './commands/glory-commands.js';
+import { tagCommands }       from './commands/tag-commands.js';
+import { gloryCommands }     from './commands/glory-commands.js';
 
 if (!process.env.DISCORD_BOT_TOKEN) {
   console.error('DISCORD_BOT_TOKEN is not set');
@@ -57,6 +60,8 @@ const all = [
   { data: dHelp,           execute: eHelp },
   { data: dSetCookie,      execute: eSetCookie },
   { data: dTag1400,        execute: eTag1400 },
+  { data: dSnipelist,      execute: eSnipelist },
+  { data: dSnipelistView,  execute: eSnipelistView },
   ...groupLinkCommands,
   ...tagCommands,
   ...gloryCommands,
@@ -66,6 +71,7 @@ for (const cmd of all) commands.set(cmd.data.name, cmd);
 
 client.once(Events.ClientReady, c => {
   console.log(`Online as ${c.user.tag} — ${commands.size} commands loaded`);
+  startSnipeLoop(client);
 });
 
 client.on(Events.InteractionCreate, async interaction => {

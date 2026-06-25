@@ -2,6 +2,7 @@ import { getCookie as getDbCookie } from './db.js';
 
 const GROUPS   = 'https://groups.roblox.com/v1';
 const USERS    = 'https://users.roblox.com/v1';
+const PRESENCE = 'https://presence.roblox.com/v1';
 
 const cookie = () => {
   const db = getDbCookie();
@@ -63,6 +64,52 @@ export async function unban(groupId, userId) {
     headers: { Cookie: c, 'X-CSRF-TOKEN': token },
   });
   return r.ok;
+}
+
+export async function getJoinRequests(groupId) {
+  const c = cookie();
+  if (!c) throw new Error('No Roblox cookie set. Use `/setcookie` to set one.');
+  const all = [];
+  let cursor = '';
+  do {
+    const url = `${GROUPS}/groups/${groupId}/join-requests?limit=100&sortOrder=Asc${cursor ? `&cursor=${cursor}` : ''}`;
+    const r = await fetch(url, { headers: { Cookie: c } });
+    const d = await r.json();
+    if (!r.ok) {
+      const msg = d.errors?.[0]?.message ?? `Roblox error ${r.status}`;
+      throw new Error(msg);
+    }
+    all.push(...(d.data ?? []));
+    cursor = d.nextPageCursor ?? '';
+  } while (cursor);
+  return all;
+}
+
+export async function acceptJoinRequest(groupId, userId) {
+  const c = cookie();
+  if (!c) throw new Error('No Roblox cookie set. Use `/setcookie` to set one.');
+  const token = await xcsrf(c);
+  const r = await fetch(`${GROUPS}/groups/${groupId}/join-requests/users/${userId}`, {
+    method: 'POST',
+    headers: { Cookie: c, 'X-CSRF-TOKEN': token },
+  });
+  if (!r.ok) {
+    const e = await r.json().catch(() => ({}));
+    throw new Error(e.errors?.[0]?.message ?? `Roblox error ${r.status}`);
+  }
+}
+
+export async function getPresence(userIds) {
+  const c = cookie();
+  const headers = { 'Content-Type': 'application/json' };
+  if (c) headers.Cookie = c;
+  const r = await fetch(`${PRESENCE}/presence/users`, {
+    method: 'POST',
+    headers,
+    body: JSON.stringify({ userIds }),
+  });
+  const d = await r.json();
+  return d.userPresences ?? [];
 }
 
 async function xcsrf(c) {
