@@ -19,8 +19,8 @@ import { data as dResetCd }        from './commands/reset-cd.js';
 import { data as dResetLogin }     from './commands/reset-login.js';
 import { data as dHelp }           from './commands/help.js';
 import { data as dSetCookie }      from './commands/setcookie.js';
-import { data as dAccept }    from './commands/accept.js';
-import { data as dAcceptAll } from './commands/accept-all.js';
+import { data as dTag1400 }        from './commands/tag-1400.js';
+import { groupLinkCommands } from './commands/group-links.js';
 import { tagCommands }   from './commands/tag-commands.js';
 import { gloryCommands } from './commands/glory-commands.js';
 
@@ -28,7 +28,8 @@ const raw = [
   dLogin, dLinkStatus, dSetTag, dCooldown, dRolecheck, dRoles,
   dUnrole, dUnbanAll, dTagWipe, dWhitelistAdmin, dWhitelistRow,
   dBlacklist, dBlacklistList, dTagHistory, dView, dResetCd, dResetLogin,
-  dHelp, dSetCookie, dAccept, dAcceptAll,
+  dHelp, dSetCookie, dTag1400,
+  ...groupLinkCommands.map(c => c.data),
   ...tagCommands.map(c => c.data),
   ...gloryCommands.map(c => c.data),
 ];
