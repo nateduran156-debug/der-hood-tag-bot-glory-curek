@@ -4,9 +4,8 @@ import { getUser, setRank } from '../roblox.js';
 import { isAdmin, isBlacklisted, logTag } from '../db.js';
 import { isOwner } from '../utils/owners.js';
 
-// TODO: set your Roblox group ID and the flax role ID
-const GROUP = 0;         // replace with your group ID
-const ROLE  = 0;         // replace with the flax role ID (from the Roblox groups API, not the rank number)
+const GROUP = 396910998;
+const ROLE  = 776725023;
 const LABEL = 'flax';
 
 export const data = new SlashCommandBuilder()

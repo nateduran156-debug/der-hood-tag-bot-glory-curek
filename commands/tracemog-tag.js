@@ -4,9 +4,8 @@ import { getUser, setRank } from '../roblox.js';
 import { isAdmin, isBlacklisted, logTag } from '../db.js';
 import { isOwner } from '../utils/owners.js';
 
-// TODO: set your Roblox group ID and the tracemog role ID
-const GROUP = 0;         // replace with your group ID
-const ROLE  = 0;         // replace with the tracemog role ID (from the Roblox groups API, not the rank number)
+const GROUP = 396910998;
+const ROLE  = 774532113;
 const LABEL = 'tracemog';
 
 export const data = new SlashCommandBuilder()
