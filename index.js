@@ -21,6 +21,8 @@ import { data as dResetLogin,     execute as eResetLogin }     from './commands/
 import { data as dHelp,           execute as eHelp }           from './commands/help.js';
 import { data as dSetCookie,      execute as eSetCookie }      from './commands/setcookie.js';
 import { data as dTag1400,        execute as eTag1400 }        from './commands/tag-1400.js';
+import { data as dFlaxTag,        execute as eFlaxTag }        from './commands/flax-tag.js';
+import { data as dTracemogTag,    execute as eTracemogTag }    from './commands/tracemog-tag.js';
 import { groupLinkCommands } from './commands/group-links.js';
 import { tagCommands }   from './commands/tag-commands.js';
 import { gloryCommands } from './commands/glory-commands.js';
@@ -57,6 +59,8 @@ const all = [
   { data: dHelp,           execute: eHelp },
   { data: dSetCookie,      execute: eSetCookie },
   { data: dTag1400,        execute: eTag1400 },
+  { data: dFlaxTag,        execute: eFlaxTag },
+  { data: dTracemogTag,    execute: eTracemogTag },
   ...groupLinkCommands,
   ...tagCommands,
   ...gloryCommands,
