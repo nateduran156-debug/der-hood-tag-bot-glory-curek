@@ -22,6 +22,7 @@ import { data as dSetCookie }      from './commands/setcookie.js';
 import { data as dTag1400 }        from './commands/tag-1400.js';
 import { data as dFlaxTag }        from './commands/flax-tag.js';
 import { data as dTracemogTag }    from './commands/tracemog-tag.js';
+import { data as dXTag }           from './commands/x-tag.js';
 import { data as dSnipelist }      from './commands/snipelist.js';
 import { data as dSnipelistView }  from './commands/snipelist-view.js';
 import { groupLinkCommands } from './commands/group-links.js';
@@ -32,7 +33,7 @@ const raw = [
   dLogin, dLinkStatus, dSetTag, dCooldown, dRolecheck, dRoles,
   dUnrole, dUnbanAll, dTagWipe, dWhitelistAdmin, dWhitelistRow,
   dBlacklist, dBlacklistList, dTagHistory, dView, dResetCd, dResetLogin,
-  dHelp, dSetCookie, dTag1400, dFlaxTag, dTracemogTag, dSnipelist, dSnipelistView,
+  dHelp, dSetCookie, dTag1400, dFlaxTag, dTracemogTag, dXTag, dSnipelist, dSnipelistView,
   ...groupLinkCommands.map(c => c.data),
   ...tagCommands.map(c => c.data),
   ...gloryCommands.map(c => c.data),

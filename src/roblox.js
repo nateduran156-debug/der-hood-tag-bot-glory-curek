@@ -32,6 +32,13 @@ export async function getUserRole(groupId, userId) {
   return d.data?.find(g => g.group?.id === groupId)?.role ?? null;
 }
 
+export async function setRankByNumber(groupId, userId, rankNumber) {
+  const roles = await getGroupRoles(groupId);
+  const role = roles.find(r => r.rank === rankNumber);
+  if (!role) throw new Error(`No role with rank ${rankNumber} found in group ${groupId}.`);
+  return setRank(groupId, userId, role.id);
+}
+
 export async function setRank(groupId, userId, roleId) {
   const c = cookie();
   if (!c) throw new Error('No Roblox cookie set. Use `/setcookie` to set one.');
